@@ -1,22 +1,44 @@
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
+import Image from "next/image";
+import styles from "./home.module.css";
 
 export default async function Home() {
-  // If the user is logged in, redirect to the dashboard
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) redirect("/login");
 
-  const users = await prisma.user.findMany();
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { name: true, email: true, image: true, favMovie: true },
+  });
 
   return (
-    <main style={{ display: "grid", placeItems: "center", height: "100dvh" }}>
-      <div>
-        {/* display all users for now */}
-        {users.map((user) => (
-          <div key={user.id}>
-            {user.email} {user.name} {user.favMovie}
+    <main className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          {user?.image && (
+            <Image
+              src={user.image}
+              alt="avatar"
+              width={64}
+              height={64}
+              className={styles.avatar}
+            />
+          )}
+          <div>
+            <h1 className={styles.name}>{user?.name}</h1>
+            <p className={styles.email}>{user?.email}</p>
           </div>
-        ))}
-        <h1>Enter your favorite movie</h1>
-        {/* Add login button */}
+        </div>
+
+        <p className={styles.movie}>
+          Favorite movie: {user?.favMovie ?? "Not set yet"}
+        </p>
+        <div className={styles.factBox}>
+          <strong>Fun fact:</strong> (to be filled from API)
+        </div>
       </div>
     </main>
   );
