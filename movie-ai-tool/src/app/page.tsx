@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import Image from "next/image";
 import styles from "./home.module.css";
+import { signOut } from "next-auth/react";
+import LogoutButton from "./components/LogoutButton";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -55,7 +57,7 @@ export default async function Home() {
         </div>
 
         {!user?.favMovie ? (
-          <form className={styles.movie} method="POST" action="/api/favmovie">
+          <form method="POST" action="/api/favmovie">
             <label>Please enter your favorite movie below.</label>
             <div className={styles.movieInputRow}>
               <input
@@ -81,6 +83,8 @@ export default async function Home() {
             </div>
           </>
         )}
+
+        <LogoutButton />
       </div>
     </main>
   );
