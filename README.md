@@ -15,10 +15,9 @@ Movie AI Tool UI (Next.js / React) -> API Routes (Next.js + Prisma) -> Supabase 
             |
             |-------> Fun Fact Generation (OpenAI API)
 
-## AWS / Hosting
+## Hosting
 
-- Supabase for Postgres + authentication adapter
-- Deployed via Vercel (Next.js)
+- Vercel (Next.js)
 
 ## Sources
 
