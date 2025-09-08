@@ -33,12 +33,33 @@ export default async function Home() {
           </div>
         </div>
 
-        <p className={styles.movie}>
-          Favorite movie: {user?.favMovie ?? "Not set yet"}
-        </p>
-        <div className={styles.factBox}>
-          <strong>Fun fact:</strong> (to be filled from API)
-        </div>
+        {!user?.favMovie ? (
+          <form className={styles.movie} method="POST" action="/api/favmovie">
+            <label>Please enter your favorite movie below.</label>
+            <div className={styles.movieInputRow}>
+              <input
+                type="text"
+                name="favMovie"
+                placeholder="Enter a movie title..."
+                required
+                className={styles.movieInput}
+              />
+
+              <button type="submit" className={styles.movieButton}>
+                Submit
+              </button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <p className={styles.movie}>
+              Favorite movie: {user?.favMovie ?? "Not set yet"}
+            </p>
+            <div className={styles.factBox}>
+              <strong>Fun fact:</strong> (to be filled from API)
+            </div>
+          </>
+        )}
       </div>
     </main>
   );
