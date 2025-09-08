@@ -10,10 +10,10 @@
 ## ARCHITECTURE
 
 Movie AI Tool UI (Next.js / React) -> API Routes (Next.js + Prisma) -> Supabase Postgres
-|
-|-------> Authentication via NextAuth (Google OAuth)
-|
-|-------> Fun Fact Generation (OpenAI API)
+            |
+            |-------> Authentication via NextAuth (Google OAuth)
+            |
+            |-------> Fun Fact Generation (OpenAI API)
 
 ## AWS / Hosting
 
