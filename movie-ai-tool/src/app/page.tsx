@@ -14,6 +14,27 @@ export default async function Home() {
     select: { name: true, email: true, image: true, favMovie: true },
   });
 
+  let funFact: string | null = null;
+  if (user?.favMovie) {
+    const title = user.favMovie;
+    const prompt = `Provide an interesting fun fact about the movie "${title}". Please don't just summarize the movie or tell me something that I would know just by watching it.`;
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 100,
+      }),
+    });
+    const data = await response.json();
+    funFact = data.choices?.[0]?.message?.content?.trim() ?? null;
+  }
+
   return (
     <main className={styles.container}>
       <div className={styles.card}>
@@ -56,7 +77,7 @@ export default async function Home() {
               Favorite movie: {user?.favMovie ?? "Not set yet"}
             </p>
             <div className={styles.factBox}>
-              <strong>Fun fact:</strong> (to be filled from API)
+              <strong>Fun fact:</strong> {funFact || "Loading..."}
             </div>
           </>
         )}
